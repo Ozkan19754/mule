@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+      xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+      xmlns:american-flights-api="http://www.mulesoft.org/schema/mule/american-flights-api"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+        http://www.mulesoft.org/schema/mule/american-flights-api http://www.mulesoft.org/schema/mule/american-flights-api/current/mule-american-flights-api.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+
+    <!-- Configuration Properties -->
+    <configuration-properties doc:name="Configuration properties" doc:id="bb562371-f979-4e9f-877c-b5e976a85278" file="config.yaml"/>
+    
+    <!-- HTTP Listener Configuration -->
+    <http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="c165c735-098a-4ba5-b0ba-8cd21611c1ae">
+        <http:listener-connection host="0.0.0.0" port="${http.port}"/>
+    </http:listener-config>
+    
+    <!-- American Flights API Configuration -->
+    <american-flights-api:config name="American_Flights_API_Config" doc:name="American Flights API Config" doc:id="cbf9f027-bfed-4068-a63c-850d3f63698a"
+                                 property_host="${american.host}"
+                                 property_port="${american.port}"
+                                 property_basePath="${american.basepath}"
+                                 property_protocol="${american.protocol}"/>
+    
+    <!-- HTTP Request Configuration for Training -->
+    <http:request-config name="HTTP_Request_config_training" doc:name="HTTP Request configuration" doc:id="44d075b0-2b26-4e22-8750-0b06a126c9eb" basePath="${training.basepath}">
+        <http:request-connection host="${training.host}" port="${training.port}"/>
+    </http:request-config>
+	<wsc:config name="Delta_Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="65a31fd2-0f61-4ae1-bc65-62dbdd24317f" >
+		<wsc:connection wsdlLocation="${delta.wsdl}" service="${delta.service}" port="${delta.port}" >
+			<reconnection >
+				<reconnect />
+			</reconnection>
+			<wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
+		</wsc:connection>
+	</wsc:config>
+	<configuration doc:name="Configuration" doc:id="4b9673f5-277a-4339-bad2-6b646db55c7d" defaultErrorHandler-ref="globalError_Handler" />
+	<error-handler name="globalError_Handler" doc:id="113eb535-393f-4574-b055-23cc76bcb0cb" >
+	<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="fd0de23a-2c25-4837-9ce7-a42907cf2b07" type="ANY">
+				<ee:transform doc:name="error.description" doc:id="63bc5ee6-d8a4-4200-980a-8ade82dcb388">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": error.description
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<set-variable value="400" doc:name="httpStatus" doc:id="39d6ecfc-34ba-4d28-8924-caa67bd4f7bc" variableName="httpStatus" />
+			</on-error-continue>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="84c7ad56-39a4-4f8b-bd01-cb31345aedf1" type="ANY">
+			<ee:transform doc:name="Data unavailable" doc:id="29a587ed-0371-46d5-9689-815046289914">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": "Data unavailable. Try later" ++ error.description as String
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="500" doc:name="httpStatus" doc:id="82ee3610-09fb-4214-808f-ebe503df8066" variableName="httpStatus"/>
+		</on-error-continue>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="3fc8f905-390a-4421-aaab-88970c9dc7e0" type="ANY">
+			<ee:transform doc:name="error.description" doc:id="89736f5b-d19d-4c5c-a673-b3674a5c872e">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": error.description
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="500" doc:name="httpStatus" doc:id="ae93c7a9-1861-46be-82e1-924e80f5f2c0" variableName="httpStatus" />
+		</on-error-continue>
+	</error-handler>
+</mule>
+
