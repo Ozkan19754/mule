@@ -1,0 +1,14 @@
+http:
+  port: "8081"
+  
+sfdc:
+  username: "ozkan@chessmaster.com"
+  password: "Chessmaster2105!.@"
+  token: "YNHma995Cs7CyR4Dc0sXH42y"
+
+db:
+  host: "mudb.mule-training.com"
+  port: "3306"
+  user: "mule"
+  password: "mule"
+  database: "training"
