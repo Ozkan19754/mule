@@ -26,12 +26,12 @@ http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/cu
     <http:request-config name="HTTP_Request_config" doc:name="HTTP Request config">
         <http:request-connection host="localhost" port="8087" />
     </http:request-config>
-
-    <flow name="privateFlow" doc:id="9b1a551e-6bd5-42ae-82cf-ce200fda9afa">
+	<flow name="privateFlow" doc:id="9b1a551e-6bd5-42ae-82cf-ce200fda9afa">
         <http:request method="GET" doc:name="GET /goodbye" doc:id="ff051cba-cd88-49e9-a93a-c21254d2211e" path="/goodbye" config-ref="HTTP_Request_config" responseTimeout="300000" sendBodyMode="AUTO" sendCorrelationId="NEVER">
             <ee:repeatable-file-store-stream bufferUnit="MB" />
         </http:request>
 		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="c800820e-14bf-4185-90c7-48cdcdff43bd" />
+		<logger level="INFO" doc:name="Logger" doc:id="f91a5468-1925-4746-af49-e1ecaf10aead" message="logger added"/>
     
 </flow>
 
