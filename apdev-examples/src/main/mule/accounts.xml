@@ -167,7 +167,7 @@ payload]]></ee:set-payload>
 			<set-payload value="processed" doc:name="processed" doc:id="d1dee440-fb91-4523-9238-44676fc816fd" />
 			
 		</foreach>
-		<logger level="INFO" doc:name="payload" doc:id="c5f75abc-274e-46ea-868c-88917f0e0e13" message="#[payload]"/>
+		
 	</flow>
 	<flow name="getSFDCaccounts" doc:id="c36dec0d-b6db-438a-8cf7-c7954cbc817b" >
 		<http:listener doc:name="GET /sfdc" doc:id="c142ba65-dd5c-4f62-abf5-258b5b9bc5e4" config-ref="HTTP_Listener_config4" path="/sfdc" allowedMethods="GET"/>
