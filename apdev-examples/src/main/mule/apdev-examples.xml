@@ -31,7 +31,9 @@ http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/cu
         <http:request method="GET" doc:name="GET /goodbye" doc:id="ff051cba-cd88-49e9-a93a-c21254d2211e" path="/goodbye" config-ref="HTTP_Request_config" responseTimeout="300000" sendBodyMode="AUTO" sendCorrelationId="NEVER">
             <ee:repeatable-file-store-stream bufferUnit="MB" />
         </http:request>
-    </flow>
+		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="c800820e-14bf-4185-90c7-48cdcdff43bd" />
+    
+</flow>
 
     <flow name="helloFlow" doc:id="7caf1c89-a40b-4d56-8d5a-00c3a1a61977">
         <http:listener doc:name="GET /hello" doc:id="81843244-e079-451c-bf59-c3e7ce61c70d" config-ref="HTTP_Listener_config5" path="/hello" allowedMethods="GET">
