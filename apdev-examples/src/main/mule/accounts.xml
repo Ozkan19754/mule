@@ -97,7 +97,7 @@ WHERE postal = :postal AND accountID > :lastAccountID ]]></db:sql>
 				</jms:publish>
 			</when>
 			<otherwise >
-				<logger level="INFO" doc:name="No new records" doc:id="da5c625e-2dbc-4725-8648-7ceb5d8e4dce" message="No new records"/>
+				
 			</otherwise>
 		</choice>
 	</flow>
