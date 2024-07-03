@@ -69,7 +69,6 @@ WHERE Name= ':cname']]></salesforce:salesforce-query>
 				<logger level="INFO" doc:name="Logger" doc:id="fe315630-917e-45f7-9d22-5fac7aa1f2da" />
 			</batch:on-complete>
 		</batch:job>
-		<logger level="INFO" doc:name="payload" doc:id="b890108a-5808-4e8f-b6a9-6f904c29cee9" message="#[payload]"/>
 	</flow>
 	<flow name="syncDBaccountsWithPostal" doc:id="4d6e2bd3-3b05-4584-9804-b61f4fea6f4a" initialState="started">
 		<scheduler doc:name="Scheduler" doc:id="9fe84661-2f61-40fd-ad4b-24b7381bfbd4" >
