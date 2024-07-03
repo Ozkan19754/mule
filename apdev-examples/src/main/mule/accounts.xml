@@ -165,7 +165,7 @@ payload]]></ee:set-payload>
 		</ee:transform>
 		<foreach doc:name="For Each" doc:id="95889c04-2d42-4f7c-b191-3900a8c0d8bc" >
 			<set-payload value="processed" doc:name="processed" doc:id="d1dee440-fb91-4523-9238-44676fc816fd" />
-			<logger level="INFO" doc:name="payload" doc:id="3812cc7c-568b-47e5-9057-3a2c14347bce" message="#[payload]"/>
+			
 		</foreach>
 		<logger level="INFO" doc:name="payload" doc:id="c5f75abc-274e-46ea-868c-88917f0e0e13" message="#[payload]"/>
 	</flow>
